@@ -31,7 +31,6 @@ def index():
     file_tree = {"files":[]}
     i = 0
     for file in files:
-        
         file_name = os.path.basename(file.path)
         file_tree["files"].append(file_name)
         #if file_name== METADATA_FILENAME:
@@ -47,22 +46,6 @@ def index():
 
     return file_tree
 
-
-"""
-@app.route('/aaa')
-def hello2():
-    
-
-    oc.mkdir('testdir')
-
-    oc.put_file('testdir/remotefile.txt', 'localfile.txt')
-
-    link_info = oc.share_file_with_link('testdir/remotefile.txt')
-
-    print ("Here is your link: ") + link_info.get_link()
-    return "Hello World2"
-
-"""
 @app.route('/photos')
 def view():
     url = 'http://localhost:8081'
@@ -74,12 +57,12 @@ def view():
 
     photos = client.list("/Photos")
     photo_tree = {"photos":[]}
-    
+
     i = 0
     for photo in photos:
         photo_name = os.path.basename(photo.path)
-        photo_attribute = os.attributes.getcontenttype(photo.attributes)
-        if photo_attribute == "image/png":
+        photo_attribute = photo.attributes["{DAV:}getcontenttype"]
+        if photo_attribute == "image/jpeg":
             photo_tree["photos"].append(photo_name)
             print(photo.path + " " + str(i))
         i+=1
@@ -103,3 +86,19 @@ def tisaluta():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+"""
+@app.route('/aaa')
+def hello2():
+    
+
+    oc.mkdir('testdir')
+
+    oc.put_file('testdir/remotefile.txt', 'localfile.txt')
+
+    link_info = oc.share_file_with_link('testdir/remotefile.txt')
+
+    print ("Here is your link: ") + link_info.get_link()
+    return "Hello World2"
+
+"""
