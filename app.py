@@ -27,7 +27,6 @@ def index():
     #folder_path = "."
     files = client.list(".")
     print(files)
-    METADATA_FILENAME = 'metadata.json'
 
     file_tree = {"files":[]}
     i = 0
@@ -40,9 +39,6 @@ def index():
         print (file.path + " " + str(i))
         i+=1
 
-        
-
-
     #Chiude la connessione a NextCloud
 
     client.logout()
@@ -50,9 +46,6 @@ def index():
     #Restituisce la lista dei file alla pagina HTML
 
     return file_tree
-
-
-
 
 
 """
@@ -70,6 +63,43 @@ def hello2():
     return "Hello World2"
 
 """
+@app.route('/photos')
+def view():
+    url = 'http://localhost:8081'
+    username = 'ebraamsaad'
+    password = 'ebraamsaad99'
+    client = Client(url)
+
+    client.login(username, password)
+
+    photos = client.list("/Photos")
+    photo_tree = {"photos":[]}
+    
+    i = 0
+    for photo in photos:
+        photo_name = os.path.basename(photo.path)
+        photo_attribute = os.attributes.getcontenttype(photo.attributes)
+        if photo_attribute == "image/png":
+            photo_tree["photos"].append(photo_name)
+            print(photo.path + " " + str(i))
+        i+=1
+    
+    return photo_tree
+        
+
+
+
+
+@app.route('/saluta')
+def tisaluta():
+    url = 'http://localhost:8081'
+    username = 'ebraamsaad'
+    password = 'ebraamsaad99'
+
+    saluto = "ti saluta checco"
+    return saluto
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
