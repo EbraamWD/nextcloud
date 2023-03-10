@@ -1,30 +1,47 @@
-from flask import Flask, render_template
-from pyocclient import Client
+from flask import Flask, jsonify
+from owncloud import Client
 import requests
+import os
 
 app = Flask(__name__)
 @app.route('/')
 def hello():
     return "Hello World"
 
-@app.route('/')
+@app.route('/files')
 def index():
     #Configurazione dell'URL di NextCloud e delle credenziali di accesso
-    url = 'http://localhost:8081/apps/files/?dir=/&fileid=2'
+    url = 'http://localhost:8081'
     username = 'ebraamsaad'
-    password = 'Its-My-Account99'
+    password = 'ebraamsaad99'
 
     #Creare un oggetto Client per la connesisone a NextCloud
 
-    client = Client(url, username, password)
+    client = Client(url)
 
     #Effettua il login
 
-    client.login()
+    client.login(username, password)
     #Ottenere la lista dei file presenti nella cartella specificata
 
-    folder_path = '/apps/files/?dir=/&fileid=2'
-    files = client.list(folder_path)
+    #folder_path = "."
+    files = client.list(".")
+    print(files)
+    METADATA_FILENAME = 'metadata.json'
+
+    file_tree = {"files":[]}
+    i = 0
+    for file in files:
+        
+        file_name = os.path.basename(file.path)
+        file_tree["files"].append(file_name)
+        #if file_name== METADATA_FILENAME:
+        #print (file_name + " " + str(i))
+        print (file.path + " " + str(i))
+        i+=1
+
+        
+
 
     #Chiude la connessione a NextCloud
 
@@ -32,7 +49,7 @@ def index():
 
     #Restituisce la lista dei file alla pagina HTML
 
-    return render_template('index.html', files=files)
+    return file_tree
 
 
 
@@ -55,4 +72,4 @@ def hello2():
 """
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
