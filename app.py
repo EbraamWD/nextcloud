@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
-from owncloud import Client
+from owncloud import Client, FileInfo
 import requests
 import os
+
+
 
 app = Flask(__name__)
 @app.route('/')

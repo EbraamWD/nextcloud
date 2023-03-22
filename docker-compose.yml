@@ -1,0 +1,32 @@
+version: '3'
+services:
+  python:
+    container_name: python
+    image: app.py
+    ports: 
+     - "5000:5000"
+    volumes:
+      - /Desktop/nextcloud-1
+
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud
+    ports:
+      - "8080:81"
+    volumes:
+      - nextcloud:/var/www/html
+  
+  db:
+        image: mariadb
+        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        restart: always
+        volumes:
+            - db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: example
+
+volumes: 
+  db:
+  nextcloud: 
+ 
+
