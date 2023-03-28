@@ -1,0 +1,2 @@
+Flask==1.1.4
+pyocclient==0.6
