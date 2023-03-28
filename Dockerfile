@@ -1,17 +1,16 @@
-FROM python:3.8
-
-RUN python3 -m pip install flask
+FROM python:3.6-slim-buster
 
 
-COPY . /
+COPY . /app
 
-#WORKDIR /project
+WORKDIR /app
+
+RUN python3 -m pip install -r requirements.txt
 
 EXPOSE 5000
 
-ENV FLASK_APP=app
+ENV FLASK_APP=app.py
 #ENV FLASK_ENV=development
-
 CMD ["python", "app.py"]
+#CMD ["python3", "flask", "run", "--host=0.0.0.0"]
 
-#"--host=0.0.0.0
