@@ -2,7 +2,7 @@ version: '3'
 services:
   python:
     container_name: python
-    image: app.py
+    image: riuzzo01/app.py
     ports: 
      - "5000:5000"
     volumes:
@@ -12,7 +12,7 @@ services:
     container_name: nextcloud
     image: nextcloud
     ports:
-      - "8080:81"
+      - "8081:80"
     volumes:
       - nextcloud:/var/www/html
   

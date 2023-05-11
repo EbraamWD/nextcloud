@@ -50,7 +50,7 @@ def index():
 
 @app.route('/photos')
 def view():
-    url = 'http://0.0.0.0:8081'
+    url = 'http://localhost:8081'
     username = 'ebraamsaad'
     password = 'ebraamsaad99'
     client = Client(url)
