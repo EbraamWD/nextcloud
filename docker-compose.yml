@@ -2,7 +2,7 @@ version: '3'
 services:
   python:
     container_name: python
-    image: riuzzo01/app.py
+    image: riuzzo01/multi-stage-app.py
     ports: 
      - "5000:5000"
     volumes:
@@ -17,13 +17,13 @@ services:
       - nextcloud:/var/www/html
   
   db:
-        image: mariadb
-        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-        restart: always
-        volumes:
-            - db:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: example
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
 
 volumes: 
   db:
