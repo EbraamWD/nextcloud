@@ -2,11 +2,13 @@ version: '3'
 services:
   python:
     container_name: python
-    image: riuzzo01/multi-stage-app-flask
+    image: riuzzo01/multi-stage-app-python-alpine
     ports: 
      - "5000:5000"
     volumes:
       - /Desktop/nextcloud-1
+    networks:
+      - backend
 
   nextcloud:
     container_name: nextcloud
@@ -15,6 +17,8 @@ services:
       - "8081:80"
     volumes:
       - nextcloud:/var/www/html
+    networks:
+      - backend
   
   db:
     image: mariadb
@@ -22,11 +26,17 @@ services:
     restart: always
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - backend
     environment:
       MYSQL_ROOT_PASSWORD: example
 
 volumes: 
   db:
   nextcloud: 
+
+networks:
+  backend:
+    driver: bridge
  
 

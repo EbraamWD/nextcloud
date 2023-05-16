@@ -1,26 +1,27 @@
-# Stage 1: Build
-FROM python:3.6-slim-buster AS build
+FROM python:alpine as build
 
-WORKDIR /app
+RUN apk upgrade --no-cache
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo
 
-COPY . /app
+WORKDIR /source
 
-RUN python3 -m pip install --user --no-cache-dir -r requirements.txt
+COPY requirements.txt /source/
 
-# Stage 2: Run
-FROM python:3.6-slim-buster AS run
+RUN python3 -m venv /source/venv
+RUN . /source/venv/bin/activate && \
+    python3 -m ensurepip --upgrade && \
+    python3 -m pip install -r /source/requirements.txt 
 
-COPY --from=build /root/.local /root/.local
-COPY --from=build /app /app
+COPY app.py .
+    
+# Build the final image
 
-WORKDIR /app
+FROM python:alpine as final
 
-ENV PATH=/root/.local/bin:$PATH \
-    FLASK_APP=app.py \
-    FLASK_ENV=production \
-    LC_ALL=C.UTF-8 \
-    LANG=C.UTF-8
+WORKDIR /source
 
-EXPOSE 5000
+COPY --from=build /source /source
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+ENV FLASK_APP=app.py
+
+CMD . /source/venv/bin/activate && python3 app.py
