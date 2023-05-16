@@ -1,14 +1,14 @@
 FROM python:alpine as build
 
-RUN apk upgrade --no-cache
-RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo
+RUN apk upgrade --no-cache && \
+    apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo
 
 WORKDIR /source
 
 COPY requirements.txt /source/
 
-RUN python3 -m venv /source/venv
-RUN . /source/venv/bin/activate && \
+RUN python3 -m venv /source/venv && \
+    . /source/venv/bin/activate && \
     python3 -m ensurepip --upgrade && \
     python3 -m pip install -r /source/requirements.txt 
 
