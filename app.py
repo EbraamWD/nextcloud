@@ -13,9 +13,9 @@ def hello():
 @app.route('/files')
 def index():
     #Configurazione dell'URL di NextCloud e delle credenziali di accesso
-    url = 'http://localhost:8081'
-    username = 'ebraamsaad'
-    password = 'ebraamsaad99'
+    url = 'http://0.0.0.0:8081'
+    username = 'Riuzzo01'
+    password = 'Pass2001!!d'
 
     #Creare un oggetto Client per la connesisone a NextCloud
 
@@ -50,7 +50,7 @@ def index():
 
 @app.route('/photos')
 def view():
-    url = 'http://localhost:8081'
+    url = 'http://0.0.0.0:8081'
     username = 'ebraamsaad'
     password = 'ebraamsaad99'
     client = Client(url)
@@ -77,7 +77,7 @@ def view():
 
 @app.route('/saluta')
 def tisaluta():
-    url = 'http://localhost:8081'
+    url = 'http://0.0.0.0:8081'
     username = 'ebraamsaad'
     password = 'ebraamsaad99'
 
